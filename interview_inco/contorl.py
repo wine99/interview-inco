@@ -2,14 +2,14 @@ from functools import cache
 
 
 def control(
-    profile: list[tuple[str, int, int]], target, price
-) -> tuple[list[tuple[str, int]], int]:
+    profile: list[tuple[str, float, float]], target, price
+) -> tuple[list[tuple[str, float]], float]:
     """
-    Returns a plan the max profit. Format of plan: [(str, int)]
+    Returns a plan the max profit. Format of plan: [(str, float)]
     """
 
     @cache
-    def choose(max_idx, target) -> tuple[list[int], int]:
+    def choose(max_idx, target) -> tuple[list[float], float]:
         """
         Returns a plan and the max profit
         """
