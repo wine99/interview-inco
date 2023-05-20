@@ -1,17 +1,15 @@
 from functools import cache
 
 
-def control(
-    profile: list[tuple[str, float, float]], target, price
-) -> tuple[list[tuple[str, float]], float]:
+def plan(profile: list[tuple[str, float, float]], target, price):
     """
-    Returns a plan the max profit. Format of plan: [(str, float)]
+    Returns a plan with the total profit and cost. Format of plan: [(str, float, float)]
     """
 
     @cache
     def choose(max_idx, target) -> tuple[list[float], float]:
         """
-        Returns a plan and the max profit
+        Returns a plan and the total profit
         """
         if max_idx == 0:
             if capacities[0] <= target and profits[0] > 0:
@@ -35,5 +33,12 @@ def control(
 
     capacities = list(map(lambda p: p[1], profile))
     profits = list(map(lambda p: p[1] * (price - p[2]), profile))
-    plan, max_profit = choose(len(profile) - 1, target)
-    return list(zip(list(map(lambda p: p[0], profile)), plan, strict=True)), max_profit
+    plan, total_profit = choose(len(profile) - 1, target)
+    costs = map(lambda p: p[2], profile)
+    total_cost = sum(map(lambda p_c: p_c[0] * p_c[1], zip(plan, costs)))
+    return {
+        "plan": list(zip(list(map(lambda p: p[0], profile)), plan, strict=True)),
+        "total_production": sum(plan),
+        "total_cost": total_cost,
+        "total_profit": total_profit,
+    }
