@@ -25,17 +25,19 @@
     <table class="table table-bordered">
       <thead>
         <tr>
-          <th class="col-4">Turbine</th>
+          <th class="col-3">Turbine</th>
           <th class="col-4">Capacity (MWh)</th>
           <th class="col-4">Production cost (€/MWh) </th>
+          <th class="col-1"></th>
         </tr>
       </thead>
       <tbody>
         {% for t in turbines %}
-        <tr id="turbine-{{ t.id }}">
+        <tr id="turbine-{{ t.id }}" class="turbine-disabled">
           <td>{{ t.id }}</td>
           <td>{{ t.capacity }}</td>
           <td>{{ t.cost }}</td>
+          <td>Off</td>
         </tr>
         {% endfor %}
       </tbody>
@@ -104,10 +106,13 @@
       document.getElementById("totalCost").innerHTML = data.total_cost
       document.getElementById("totalProfit").innerHTML = data.total_profit
       data.plan.forEach(t => {
+        const el = document.getElementById("turbine-" + t[0])
         if (t[1] > 0) {
-          document.getElementById("turbine-" + t[0]).classList.add("table-primary")
+          el.classList.remove("turbine-disabled")
+          el.lastElementChild.innerHTML = "On"
         } else {
-          document.getElementById("turbine-" + t[0]).classList.remove("table-primary")
+          el.classList.add("turbine-disabled")
+          el.lastElementChild.innerHTML = "Off"
         }
       })
     }
@@ -202,6 +207,10 @@
       margin-right: 40px;
       font-size: large;
       font-weight: 500;
+    }
+
+    .turbine-disabled {
+      opacity: 0.35;
     }
 
     .alert-group {
