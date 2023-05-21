@@ -1,7 +1,7 @@
 from functools import cache
 
 
-def plan(profile: list[tuple[str, float, float]], target, price):
+def compute_plan(profile: list[tuple[str, float, float]], target, price):
     """
     Returns a plan with the total profit and cost. Format of plan: [(str, float, float)]
     """

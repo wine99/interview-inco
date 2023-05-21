@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, jsonify
-from interview_inco.contorl import plan
+from interview_inco.contorl import compute_plan
 from interview_inco.db import init_app as init_db, get_db
 
 app = Flask(__name__)
@@ -38,7 +38,7 @@ def get_plan():
     turbines = get_turbines()
     target = get_target_production()
     price = get_price()
-    return jsonify(plan(turbines, target, price))
+    return jsonify(compute_plan(turbines, target, price))
 
 
 @app.route("/")
@@ -63,7 +63,7 @@ def inc_target():
 
     get_db().execute("UPDATE target_production SET production = ? where id = 1", (target,))
     get_db().commit()
-    return plan(turbines, target, get_price())
+    return compute_plan(turbines, target, get_price())
 
 
 @app.route("/dec-target", methods=["POST"])
@@ -82,7 +82,7 @@ def dec_target():
         "UPDATE target_production SET production = ? where id = 1", (target,)
     )
     get_db().commit()
-    return plan(turbines, target, get_price())
+    return compute_plan(turbines, target, get_price())
 
 
 @app.route("/set-price", methods=["POST"])
@@ -97,4 +97,4 @@ def set_price():
 
     get_db().execute("UPDATE price SET price = ? where id = 1", (price,))
     get_db().commit()
-    return plan(get_turbines(), get_target_production(), price)
+    return compute_plan(get_turbines(), get_target_production(), price)

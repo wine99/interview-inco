@@ -1,4 +1,4 @@
-from interview_inco.contorl import plan
+from interview_inco.contorl import compute_plan
 
 profile = [
     ("A", 2, 15),
@@ -17,7 +17,7 @@ def test1():
         ("D", 0),
         ("E", 5),
     ]
-    assert plan(profile, 10, 6)[0] == expected
+    assert compute_plan(profile, 10, 6)["plan"] == expected
 
 
 def test2():
@@ -35,7 +35,7 @@ def test2():
         ("D", 6),
         ("E", 5),
     ]
-    plan = plan(profile, 15, 6)[0]
+    plan = compute_plan(profile, 15, 6)["plan"]
     assert plan == expected1 or plan == expected2
 
 
@@ -47,4 +47,4 @@ def test3():
         ("D", 0),
         ("E", 5),
     ]
-    assert plan(profile, 15, 4)[0] == expected
+    assert compute_plan(profile, 15, 4)["plan"] == expected
